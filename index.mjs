@@ -1,7 +1,14 @@
-// dummy funciton for checking and publishing
-// module.exports.add = function(a,b){
-//     return a+b;
-// }
-export const add = (a, b) => {
-    return a + b;
-}
+import createServerFile from "./create_server/index.mjs";
+import createRouterFile from "./create_router/index.mjs";
+import createObjectFile from "./create_object/index.mjs";
+
+const generate_test_files = test_settings => {
+	createRouterFile(test_settings.router_settings);
+	createServerFile(
+		test_settings.server_settings,
+		test_settings.router_settings.router_file_name
+	);
+	createObjectFile(test_settings.test_settings, test_settings.schema, test_settings.n_intentional_right_cases);
+};
+
+export default generate_test_files;
