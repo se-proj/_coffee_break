@@ -10,6 +10,7 @@ const createObjectFile = (test_settings) => {
 	} = test_settings;
 
 	// Have for loop here for size of mongoose_schema array
+	// Also change obj.txt -> data.test.js
 	const {schema} = mongoose_schema[0];
 
 	const schemaAsObject = JSON.parse(schema);
