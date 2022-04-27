@@ -1,7 +1,17 @@
 import jsf from 'json-schema-faker'
 import fs from 'fs';
 
-const createObjectFile = (object, schema, n_intentional_right_cases) => {
+const createObjectFile = (test_settings) => {
+	const {
+		mongoose_schema,
+		n_intentional_right_cases,
+		n_intentional_wrong_cases,
+		n_edge_cases,
+	} = test_settings;
+
+	// Have for loop here for size of mongoose_schema array
+	const {schema} = mongoose_schema[0];
+
 	const schemaAsObject = JSON.parse(schema);
 
 	var filePath = 'obj.txt'; 
