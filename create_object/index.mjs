@@ -9,23 +9,34 @@ const createObjectFile = (test_settings) => {
 		n_edge_cases,
 	} = test_settings;
 
-	// export const person_DATA = [...]
-	// Have for loop here for size of mongoose_schema array
-	// Also change obj.txt -> data.test.js
-	const {schema} = mongoose_schema[0];
 
-	const schemaAsObject = JSON.parse(schema);
+	for(let i = 0; i<mongoose_schema.length; i++){
+		const {schema} = mongoose_schema[i];
+		const { name } = mongoose_schema[i];
 
-	var filePath = 'obj.txt'; 
-	fs.unlinkSync(filePath);
+		const schemaAsObject = JSON.parse(schema);
 
-	let noOfData = n_intentional_right_cases;
-	for (let i = 0; i < noOfData; i++) {
-		const obj = jsf.generate(schemaAsObject);
-		let sobj = JSON.stringify(obj)
-		sobj = sobj + '\n';
+		var filePath = 'data.' + name + '.js'; 
+		if (fs.existsSync(filePath)) {
+			fs.unlinkSync(filePath);
+		}
 
-		fs.appendFile(filePath, sobj, function (err) {
+		
+		let noOfData = n_intentional_right_cases;
+		let sobj = "";
+
+		sobj += "export const " + name + "_DATA = [ \n" 
+
+		for (let k = 0; k < noOfData; k++) {
+			const obj = jsf.generate(schemaAsObject);
+			sobj += "\t"
+			sobj += JSON.stringify(obj)
+			sobj +=  ',\n';
+		}
+		sobj += "]";
+
+
+		fs.writeFile(filePath, sobj, function (err) {
 			if (err) throw err;
 		});
 	}
