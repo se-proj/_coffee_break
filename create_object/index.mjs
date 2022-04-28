@@ -9,6 +9,7 @@ const createObjectFile = (test_settings) => {
 		n_edge_cases,
 	} = test_settings;
 
+	// export const person_DATA = [...]
 	// Have for loop here for size of mongoose_schema array
 	// Also change obj.txt -> data.test.js
 	const {schema} = mongoose_schema[0];
