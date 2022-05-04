@@ -2,7 +2,7 @@
 
 
 
-const createDeleteTest = (delete_api) => {
+const createDeleteTest = (delete_api, nextFunction) => {
     const {
         n_intentional_right_cases,
         n_intentional_wrong_cases,

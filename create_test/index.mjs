@@ -40,7 +40,7 @@ const addServerAxios = (port_num) => {
     SERVER_AXIOS_TEXT += "\n"
 }
 
-const addBeforeAPICall = () => {
+const addBeforeAPICall = (nextFunction) => {
     BEFORE_APICALL_TEXT += `
 const before = async () => {
     try {
@@ -48,14 +48,21 @@ const before = async () => {
         console.log(res.data)
     }
     catch(err) {
+        ERROR = true
         console.log("before() function failed")
         console.log(err)
     }
+    finally {
+        if(!ERROR)
+            ${nextFunction}()
+        else
+            console.log("TEST TERMINATED")
+    }
 }
-    `
+`
 }
 
-const addTestFunctions = (test_settings) => {
+const getAPIArray = (test_settings) => {
     const {
         n_intentional_right_cases,
         n_intentional_wrong_cases,
@@ -63,9 +70,13 @@ const addTestFunctions = (test_settings) => {
         apis
     } = test_settings
 
+    let func_index = 1
+    let api_par_array = []
+
     apis.forEach((api) => {
         const {
             http_type,
+            mongo_collection
         } = api
 
         let api_par = {
@@ -75,36 +86,76 @@ const addTestFunctions = (test_settings) => {
             api: api,
         }
 
-        let api_str = ""
         switch(http_type) {
             case "GET":
-                api_str = createGetTest(api_par)
+                api_par["func_name"] = ("get" + func_index + "_" + mongo_collection)
                 break;
             case "POST":
-                api_str = createPostTest(api_par)
+                api_par["func_name"] = ("post" + func_index + "_" + mongo_collection)
                 break;
             case "PATCH":
-                api_str = createPatchTest(api_par)
-       
+                api_par["func_name"] = ("patch" + func_index + "_" + mongo_collection)
                 break;
             case "DELETE":
-                api_str = createDeleteTest(api_par)
+                api_par["func_name"] = ("delete" + func_index + "_" + mongo_collection)
                 break;
             default:
                 break;
         }
-        TEST_TEXT += "\n"
-        TEST_TEXT += api_str
-        TEST_TEXT += "\n"
-    });
+
+        func_index++
+        api_par_array.push(api_par)
+    })
+
+    return api_par_array
+}
+
+const addTestCaseString = (api_par, nextFunction) => {
+    const {
+        http_type
+    } = api_par.api
+
+    let api_str = ""
+    switch(http_type) {
+        case "GET":
+            api_str = createGetTest(api_par, nextFunction)
+            break;
+        case "POST":
+            api_str = createPostTest(api_par, nextFunction)
+            break;
+        case "PATCH":
+            api_str = createPatchTest(api_par, nextFunction)
+            break;
+        case "DELETE":
+            api_str = createDeleteTest(api_par, nextFunction)
+            break;
+        default:
+            break;
+    }
+
+    TEST_TEXT += "\n"
+    TEST_TEXT += api_str
+    TEST_TEXT += "\n"
+}
+
+const addTestFunctions = (api_par_array) => {
+    const len = api_par_array.length
+    for(let i = 0; i < len; i++) {
+        const api_par = api_par_array[i]
+
+        if(i === len - 1)
+            addTestCaseString(api_par, null)
+        else
+            addTestCaseString(api_par, api_par_array[i + 1].func_name)
+    }
 }
 
 const compileAllFileText = () => {
     FILE_TEXT += NECESSARY_IMPORT_TEXT + "\n"
     FILE_TEXT += DATA_IMPORT_TEXT + "\n"
-    FILE_TEXT += SERVER_AXIOS_TEXT
+    FILE_TEXT += SERVER_AXIOS_TEXT + "\n"
+    FILE_TEXT += "let ERROR = false\n"
     FILE_TEXT += BEFORE_APICALL_TEXT + "\n"
-    FILE_TEXT += "let ERROR = false\n\n"
 
     FILE_TEXT += "// ///////////////////////" + "\n"
     FILE_TEXT += "// BEGIN TESTS" + "\n"
@@ -113,14 +164,17 @@ const compileAllFileText = () => {
     FILE_TEXT += "// ///////////////////////" + "\n"
     FILE_TEXT += "// END TESTS" + "\n"
     FILE_TEXT += "// ///////////////////////" + "\n"
+
+    FILE_TEXT += "\nbefore()"
 }
 
 const createTestFile = (test_settings) => {
     addNecessaryImports()
     addDataImports(test_settings.mongoose_schema)
     addServerAxios(test_settings.server_settings.port)
-    addBeforeAPICall()
-    addTestFunctions(test_settings)
+    let api_par_array = getAPIArray(test_settings)
+    addBeforeAPICall(api_par_array[0].func_name)
+    addTestFunctions(api_par_array)
 
     compileAllFileText()
 

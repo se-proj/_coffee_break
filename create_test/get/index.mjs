@@ -2,7 +2,7 @@
 
 
 
-const createGetTest = (get_api) => {
+const createGetTest = (get_api, nextFunction) => {
     const {
         n_intentional_right_cases,
         n_intentional_wrong_cases,
