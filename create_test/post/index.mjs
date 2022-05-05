@@ -31,7 +31,7 @@ const addDescriptionString = (description, mongo_collection) => {
 
 const addForCaseString = () => {
     FOR_CASE_STRING += "\tfor(let i = 0; i < length; i++) {" + "\n"
-    FOR_CASE_STRING += "\t\tapi_log += \"CASE \" + i + " + "\":\\n\"" + "\n"
+    FOR_CASE_STRING += "\t\tapi_log += \"CASE \" + (i + 1) + " + "\":\\n\"" + "\n"
     FOR_CASE_STRING += "\t\ttry {" + "\n"
 }
 

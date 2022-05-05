@@ -4,9 +4,6 @@
 
 const createPatchTest = (patch_api, nextFunction) => {
     const {
-        n_intentional_right_cases,
-        n_intentional_wrong_cases,
-        n_edge_cases,
         api,
         func_name,
     } = patch_api

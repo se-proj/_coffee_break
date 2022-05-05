@@ -17,25 +17,6 @@
 
 // //////////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////
-// //////////////////////////////////////////////////////////////////////////        
-//         if(error_flag) {
-//             ERROR = true
-//             throw err
-//         }
-//     }
-//     catch(err) {
-//         error_flag = true
-//         api_log += "Error while get: PostMessage\n"
-//         api_log += err
-//         api_log += "\n"
-//     }
-
-//     console.log(api_log)
-//     if(!error_flag)
-//         console.log("%cAll cases successfully passed", "color: green")
-// }
-// //////////////////////////////////////////////////////////////////////////
-// //////////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////
 
 const addFunctionTitle = (func_name) => {
@@ -122,7 +103,7 @@ const addEndString = (mongo_collection) => {
     }
     catch(err) {
         error_flag = true
-        console.log("Error while post: ${mongo_collection}")
+        console.log("Error while get: ${mongo_collection}")
         console.log(err)
     }
 
