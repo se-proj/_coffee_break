@@ -51,9 +51,9 @@ const addStatusCheckString = (right_status) => {
 `
 }
 
-const addTypeCheckString = () => {
+const addTypeCheckString = (type) => {
     TYPE_CHECK_STRING += `
-            if(typeof(res.data) === 'object' && len === undefined)
+            if(typeof(res.data) === '${type}' && len === undefined)
                 api_log += "type: object\\n"
             else {
                 api_log += "Object-type mis-match\\n"
@@ -91,8 +91,7 @@ const addIDIncludString = (mongo_collection) => {
             }
             else {
                 ${mongo_collection}_DATA[i]._id = res.data._id
-            }
-`
+            }`
 }
 
 const addEndString = (mongo_collection) => {
@@ -119,7 +118,6 @@ const addNewFunctionString = (newFunction) => {
         ${newFunction}()
     else
         console.log("TEST TERMINATED")
-}
 `
 }
 
@@ -134,11 +132,12 @@ const createPostTest = (post_api, nextFunction) => {
     addForCaseString()
     addServerQueryString(api.url, api.mongo_collection)
     addStatusCheckString(api.response_schema.right_status)
-    addTypeCheckString()
+    addTypeCheckString(api.response_schema.type)
     addCheckDataString(api.response_schema.filter_column, api.mongo_collection)
     addIDIncludString(api.mongo_collection)
     addEndString(api.mongo_collection)
-    addNewFunctionString(nextFunction)
+    if(nextFunction !== null)
+        addNewFunctionString(nextFunction)
 
     let return_string = ""
     return_string += FUNCTION_TITLE_STRING
@@ -149,12 +148,13 @@ const createPostTest = (post_api, nextFunction) => {
     return_string += STATUS_CHECK_STRING + "\n"
     return_string += "\t\t\tconst len = res.data.length" + "\n"
     return_string += TYPE_CHECK_STRING
+    return_string += CHECK_DATA_STRING + "\n"
 
-    return_string += ID_INCLUDE_STRING + "\n"
+    return_string += ID_INCLUDE_STRING
 
-    return_string += CHECK_DATA_STRING
     return_string += END_STRING
     return_string += NEW_FUNCTION_STRING
+    return_string += "}"
 
     return return_string
 }
