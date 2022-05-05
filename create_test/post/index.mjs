@@ -1,16 +1,162 @@
+/**
+ * 
+ */
 
+let FUNCTION_TITLE_STRING = ""
+let DESCRIPTION_STRING = ""
+let FOR_CASE_STRING = ""
+let SERVER_QUERY_STRING = ""
 
+let STATUS_CHECK_STRING = ""
+let TYPE_CHECK_STRING = ""
+let ID_INCLUDE_STRING = ""
+let CHECK_DATA_STRING = ""
+let END_STRING = ""
+let NEW_FUNCTION_STRING = ""
 
+// //////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////
+
+const addFunctionTitle = (func_name) => {
+    FUNCTION_TITLE_STRING += `const ${func_name} = async () => {\n`
+}
+
+const addDescriptionString = (description, mongo_collection) => {
+    DESCRIPTION_STRING += "\tlet api_log = \"\\n\"" + "\n"
+    DESCRIPTION_STRING += "\tlet error_flag = false" + "\n"
+    DESCRIPTION_STRING += "\tapi_log += \"" + description + "\" + \"\\n\"" + "\n"
+    DESCRIPTION_STRING += "\tconst length = " + mongo_collection + "_DATA.length" + "\n"
+}
+
+const addForCaseString = () => {
+    FOR_CASE_STRING += "\tfor(let i = 0; i < length; i++) {" + "\n"
+    FOR_CASE_STRING += "\t\tapi_log += \"CASE \" + i + " + "\":\\n\"" + "\n"
+    FOR_CASE_STRING += "\t\ttry {" + "\n"
+}
+
+const addServerQueryString = (url, mongo_collection) => {
+    SERVER_QUERY_STRING += `\t\t\tconst res = await SERVER.post(\`${url}\`, ${mongo_collection}_DATA[i])`
+    SERVER_QUERY_STRING += "\n"
+}
+
+const addStatusCheckString = (right_status) => {
+    STATUS_CHECK_STRING += `
+            if(res.status !== ${right_status}) {
+                api_log += "Incorrect Status: " + res.status + "\\n"
+                error_flag = true
+            }
+            else
+                api_log += "status: " + res.status + "\\n"
+`
+}
+
+const addTypeCheckString = () => {
+    TYPE_CHECK_STRING += `
+            if(typeof(res.data) === 'object' && len === undefined)
+                api_log += "type: object\\n"
+            else {
+                api_log += "Object-type mis-match\\n"
+                error_flag = true
+            }
+`
+}
+
+const addCheckDataString = (filter_column, mongo_collection) => {
+    CHECK_DATA_STRING += "\t\t\tconst filter_column = " + JSON.stringify(filter_column) + "\n"
+    CHECK_DATA_STRING += `
+            for(let j = 0; j < filter_column.length; j++) {
+                if(!(filter_column[j] in res.data)) {
+                    api_log += filter_column[j] + " is not present in object in position " + i + " of " + "${mongo_collection}"
+                    api += "\\n"
+                    error_flag = true
+                }
+                else {
+                    if(${mongo_collection}_DATA[i][filter_column[j]] !== res.data[filter_column[j]]) {
+                        api_log += "Value mis-match between resultant data and actual data in "
+                        api += filter_column[j] + " at position " + i + " of " + "${mongo_collection}"
+                        api += "\\n"
+                        error_flag = true
+                    }
+                }
+            }`
+}
+
+const addIDIncludString = (mongo_collection) => {
+    ID_INCLUDE_STRING += `
+            if(!("_id" in res.data)) {
+                api_log += "_id" + " is not present in object in position " + i + " of " + "${mongo_collection}"
+                api += "\\n"
+                error_flag = true
+            }
+            else {
+                ${mongo_collection}_DATA[i]._id = res.data._id
+            }
+`
+}
+
+const addEndString = (mongo_collection) => {
+    END_STRING += `
+        }
+        catch(err) {
+            error_flag = true
+            console.log("Error while post: ${mongo_collection}")
+            console.log(err)
+        }
+    }
+
+    console.log(api_log)
+    if(!error_flag)
+        console.log("All cases successfully passed")
+    else
+        ERROR = true
+`
+}
+
+const addNewFunctionString = (newFunction) => {
+    NEW_FUNCTION_STRING += `
+    if(!ERROR)
+        ${newFunction}()
+    else
+        console.log("TEST TERMINATED")
+}
+`
+}
 
 const createPostTest = (post_api, nextFunction) => {
     const {
-        n_intentional_right_cases,
-        n_intentional_wrong_cases,
-        n_edge_cases,
-        api
+        api,
+        func_name,
     } = post_api
 
-    return "PPP2"
+    addFunctionTitle(func_name)
+    addDescriptionString(api.description, api.mongo_collection)
+    addForCaseString()
+    addServerQueryString(api.url, api.mongo_collection)
+    addStatusCheckString(api.response_schema.right_status)
+    addTypeCheckString()
+    addCheckDataString(api.response_schema.filter_column, api.mongo_collection)
+    addIDIncludString(api.mongo_collection)
+    addEndString(api.mongo_collection)
+    addNewFunctionString(nextFunction)
+
+    let return_string = ""
+    return_string += FUNCTION_TITLE_STRING
+    return_string += DESCRIPTION_STRING
+    return_string += FOR_CASE_STRING
+    return_string += SERVER_QUERY_STRING
+
+    return_string += STATUS_CHECK_STRING + "\n"
+    return_string += "\t\t\tconst len = res.data.length" + "\n"
+    return_string += TYPE_CHECK_STRING
+
+    return_string += ID_INCLUDE_STRING + "\n"
+
+    return_string += CHECK_DATA_STRING
+    return_string += END_STRING
+    return_string += NEW_FUNCTION_STRING
+
+    return return_string
 }
 
 export default createPostTest
