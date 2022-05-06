@@ -1,5 +1,5 @@
 /**
- * 
+ * Create a string for post api for the test file
  */
 
 let FUNCTION_TITLE_STRING = ""
@@ -18,10 +18,18 @@ let NEW_FUNCTION_STRING = ""
 // //////////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////
 
+/**
+ * @description Add function title string
+ * @param {*} func_name 
+ */
 const addFunctionTitle = (func_name) => {
     FUNCTION_TITLE_STRING += `const ${func_name} = async () => {\n`
 }
 
+/**
+ * @description Add description string 
+ * @param {*} func_name 
+ */
 const addDescriptionString = (description, mongo_collection) => {
     DESCRIPTION_STRING += "\tlet api_log = \"\\n\"" + "\n"
     DESCRIPTION_STRING += "\tlet error_flag = false" + "\n"
@@ -29,17 +37,29 @@ const addDescriptionString = (description, mongo_collection) => {
     DESCRIPTION_STRING += "\tconst length = " + mongo_collection + "_DATA.length" + "\n"
 }
 
+/**
+ * @description Add for case string
+ * @param {*} func_name 
+ */
 const addForCaseString = () => {
     FOR_CASE_STRING += "\tfor(let i = 0; i < length; i++) {" + "\n"
     FOR_CASE_STRING += "\t\tapi_log += \"CASE \" + (i + 1) + " + "\":\\n\"" + "\n"
     FOR_CASE_STRING += "\t\ttry {" + "\n"
 }
 
+/**
+ * @description Add Server Query String
+ * @param {*} func_name 
+ */
 const addServerQueryString = (url, mongo_collection) => {
     SERVER_QUERY_STRING += `\t\t\tconst res = await SERVER.post(\`${url}\`, ${mongo_collection}_DATA[i])`
     SERVER_QUERY_STRING += "\n"
 }
 
+/**
+ * @description  Add status check string
+ * @param {*} func_name 
+ */
 const addStatusCheckString = (right_status) => {
     STATUS_CHECK_STRING += `
             if(res.status !== ${right_status}) {
@@ -51,6 +71,10 @@ const addStatusCheckString = (right_status) => {
 `
 }
 
+/**
+ * @description Add Type check string
+ * @param {*} func_name 
+ */
 const addTypeCheckString = (type) => {
     TYPE_CHECK_STRING += `
             if(typeof(res.data) === '${type}' && len === undefined)
@@ -62,6 +86,10 @@ const addTypeCheckString = (type) => {
 `
 }
 
+/**
+ * @description Add check data string
+ * @param {*} func_name 
+ */
 const addCheckDataString = (filter_column, mongo_collection) => {
     CHECK_DATA_STRING += "\t\t\tconst filter_column = " + JSON.stringify(filter_column) + "\n"
     CHECK_DATA_STRING += `
@@ -82,6 +110,10 @@ const addCheckDataString = (filter_column, mongo_collection) => {
             }`
 }
 
+/**
+ * @description Add ID include string
+ * @param {*} func_name 
+ */
 const addIDIncludString = (mongo_collection) => {
     ID_INCLUDE_STRING += `
             if(!("_id" in res.data)) {
@@ -94,6 +126,10 @@ const addIDIncludString = (mongo_collection) => {
             }`
 }
 
+/**
+ * @description Add end string
+ * @param {*} func_name 
+ */
 const addEndString = (mongo_collection) => {
     END_STRING += `
         }
@@ -112,6 +148,10 @@ const addEndString = (mongo_collection) => {
 `
 }
 
+/**
+ * @description Add new function string 
+ * @param {*} func_name 
+ */
 const addNewFunctionString = (newFunction) => {
     NEW_FUNCTION_STRING += `
     if(!ERROR)
@@ -121,6 +161,10 @@ const addNewFunctionString = (newFunction) => {
 `
 }
 
+/**
+ * @description Create string for the post api provided
+ * @param {*} func_name 
+ */
 const createPostTest = (post_api, nextFunction) => {
     const {
         api,

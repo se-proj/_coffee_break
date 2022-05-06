@@ -1,5 +1,5 @@
 /**
- * 
+ * Create test generation files by utilising all the files: get, post, patch and delete
  */
 
 import createGetTest from './get/index.mjs'
@@ -22,10 +22,17 @@ let BEFORE_APICALL_TEXT = ""
 
 let TEST_TEXT = ""
 
+/**
+ * @description Add necessary test imports for the test file
+ */
 const addNecessaryImports = () => {
     NECESSARY_IMPORT_TEXT += "import axios from 'axios'\n"
 }
 
+/**
+ * @description Add random data object imports for the test file
+ * @param {*} mongoose_schema 
+ */
 const addDataImports = (mongoose_schema) => {
     mongoose_schema.forEach((mschema) => {
         const { name } = mschema
@@ -34,12 +41,20 @@ const addDataImports = (mongoose_schema) => {
     })
 }
 
+/**
+ * @description Add create server instance string
+ * @param {*} port_num 
+ */
 const addServerAxios = (port_num) => {
     SERVER_AXIOS_TEXT += "const SERVER = axios.create({baseURL: "
     SERVER_AXIOS_TEXT += `"http://localhost:${port_num}"})`
     SERVER_AXIOS_TEXT += "\n"
 }
 
+/**
+ * @description Add Before API Call string
+ * @param {*} nextFunction 
+ */
 const addBeforeAPICall = (nextFunction) => {
     BEFORE_APICALL_TEXT += `
 const before = async () => {
@@ -62,6 +77,11 @@ const before = async () => {
 `
 }
 
+/**
+ * @description Get api array that is necessariliy modified with function names for test file
+ * @param {*} test_settings 
+ * @returns api array
+ */
 const getAPIArray = (test_settings) => {
     const {
         n_intentional_right_cases,
@@ -110,6 +130,11 @@ const getAPIArray = (test_settings) => {
     return api_par_array
 }
 
+/**
+ * @description Add Test case string
+ * @param {*} api_par 
+ * @param {*} nextFunction 
+ */
 const addTestCaseString = (api_par, nextFunction) => {
     const {
         http_type
@@ -138,6 +163,10 @@ const addTestCaseString = (api_par, nextFunction) => {
     TEST_TEXT += "\n"
 }
 
+/**
+ * @description Add test Functions for api array
+ * @param {*} api_par_array 
+ */
 const addTestFunctions = (api_par_array) => {
     const len = api_par_array.length
     for(let i = 0; i < len; i++) {
@@ -150,6 +179,9 @@ const addTestFunctions = (api_par_array) => {
     }
 }
 
+/**
+ * @description Compile the different string for final Test file
+ */
 const compileAllFileText = () => {
     FILE_TEXT += NECESSARY_IMPORT_TEXT + "\n"
     FILE_TEXT += DATA_IMPORT_TEXT + "\n"
@@ -168,6 +200,10 @@ const compileAllFileText = () => {
     FILE_TEXT += "\nbefore()"
 }
 
+/**
+ * @description Create Test file with the test file text
+ * @param {*} test_settings 
+ */
 const createTestFile = (test_settings) => {
     addNecessaryImports()
     addDataImports(test_settings.mongoose_schema)

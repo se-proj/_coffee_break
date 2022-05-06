@@ -1,6 +1,15 @@
+/**
+ * This file will be used to both create random objects using the mongoose model schema provided
+ * by the user and generate a file exporting that object.
+ */
+
 import jsf from 'json-schema-faker'
 import fs from 'fs';
 
+/**
+ * @description create random objects and generate a file containing it
+ * @param {*} test_settings 
+ */
 const createObjectFile = (test_settings) => {
 	const {
 		mongoose_schema,

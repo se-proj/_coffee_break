@@ -1,5 +1,5 @@
 /**
- * 
+ * Create a string for get api for the test file
  */
 
  let FUNCTION_TITLE_STRING = ""
@@ -19,25 +19,46 @@
 // //////////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////
 
+/**
+ * @description Add function title string
+ * @param {*} func_name 
+ */
 const addFunctionTitle = (func_name) => {
     FUNCTION_TITLE_STRING += `const ${func_name} = async () => {\n`
 }
 
+/**
+ * @description Add Description string
+ * @param {*} description 
+ * @param {*} mongo_collection 
+ */
 const addDescriptionString = (description, mongo_collection) => {
     DESCRIPTION_STRING += "\tlet api_log = \"\\n\"" + "\n"
     DESCRIPTION_STRING += "\tlet error_flag = false" + "\n"
     DESCRIPTION_STRING += "\tapi_log += \"" + description + "\" + \"\\n\"" + "\n"
 }
 
+/**
+ * Add case string
+ */
 const addCaseString = () => {
     CASE_STRING += "\ttry {" + "\n"
 }
 
+/**
+ * @description Add Server Query string
+ * @param {*} url 
+ * @param {*} mongo_collection 
+ */
 const addServerQueryString = (url, mongo_collection) => {
     SERVER_QUERY_STRING += `\t\tconst res = await SERVER.get(\`${url}\`)`
     SERVER_QUERY_STRING += "\n"
 }
 
+/**
+ * @description Add Status Check string
+ * @param {*} right_status 
+ */
 const addStatusCheckString = (right_status) => {
     STATUS_CHECK_STRING += `
         if(res.status !== ${right_status}) {
@@ -49,6 +70,10 @@ const addStatusCheckString = (right_status) => {
 `
 }
 
+/**
+ * @description Add Type Check String
+ * @param {*} type 
+ */
 const addTypeCheckString = (type) => {
     TYPE_CHECK_STRING += `
         if(typeof(res.data) === '${type}' && len !== undefined)
@@ -60,6 +85,10 @@ const addTypeCheckString = (type) => {
 `
 }
 
+/**
+ * @description Add Length check string
+ * @param {*} mongo_collection 
+ */
 const addLengthCheckString = (mongo_collection) => {
     LENGTH_CHECK_STRING += `
         if(len !== undefined) {
@@ -76,6 +105,11 @@ const addLengthCheckString = (mongo_collection) => {
 `
 }
 
+/**
+ * @description Add check data string
+ * @param {*} filter_column 
+ * @param {*} mongo_collection 
+ */
 const addCheckDataString = (filter_column, mongo_collection) => {
     CHECK_DATA_STRING += "\t\tconst filter_column = " + JSON.stringify(filter_column) + "\n"
     CHECK_DATA_STRING += `
@@ -98,6 +132,11 @@ const addCheckDataString = (filter_column, mongo_collection) => {
         }`
 }
 
+/**
+ * @description Add end string
+ * @param {*} filter_column 
+ * @param {*} mongo_collection 
+ */
 const addEndString = (mongo_collection) => {
     END_STRING += `
     }
@@ -115,6 +154,11 @@ const addEndString = (mongo_collection) => {
 `
 }
 
+/**
+ * Add New function string
+ * @param {*} filter_column 
+ * @param {*} mongo_collection 
+ */
 const addNewFunctionString = (newFunction) => {
     NEW_FUNCTION_STRING += `
     if(!ERROR)
@@ -124,6 +168,11 @@ const addNewFunctionString = (newFunction) => {
 `
 }
 
+/**
+ * @description Create string for the provided get api
+ * @param {*} filter_column 
+ * @param {*} mongo_collection 
+ */
 const createGetTest = (get_api, nextFunction) => {
     const {
         api,

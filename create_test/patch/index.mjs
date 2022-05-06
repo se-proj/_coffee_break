@@ -1,5 +1,5 @@
 /**
- * 
+ * Create a string for patch api for the test file
  */
 
 let UPDATE_FUNCTION_STRING = ""
@@ -19,9 +19,9 @@ let NEW_FUNCTION_STRING = ""
 // //////////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////
 
-// //////////////////////////////////////////////////////////////////////////
-// //////////////////////////////////////////////////////////////////////////
-// //////////////////////////////////////////////////////////////////////////
+/**
+ * Add update function string
+ */
 const addUpdateFunction = () => {
     UPDATE_FUNCTION_STRING += `
 const changeAttributesvalue = (query_data) => {
@@ -53,10 +53,18 @@ const updateData = (query_data) => {
 `
 }
 
+/**
+ * @description Add function title string
+ * @param {*} func_name 
+ */
 const addFunctionTitle = (func_name) => {
     FUNCTION_TITLE_STRING += `const ${func_name} = async () => {\n`
 }
 
+/**
+ * @description Add description string
+ * @param {*} func_name 
+ */
 const addDescriptionString = (description, mongo_collection) => {
     DESCRIPTION_STRING += "\tupdateData(PostMessage_DATA)" + "\n"
     DESCRIPTION_STRING += "\t// console.log(PostMessage_DATA)" + "\n"
@@ -66,12 +74,21 @@ const addDescriptionString = (description, mongo_collection) => {
     DESCRIPTION_STRING += "\tconst length = " + mongo_collection + "_DATA.length" + "\n"
 }
 
+/**
+ * 
+ * @param {*} func_name 
+ */
 const addForCaseString = () => {
     FOR_CASE_STRING += "\tfor(let i = 0; i < length; i++) {" + "\n"
     FOR_CASE_STRING += "\t\tapi_log += \"CASE \" + (i + 1) + " + "\":\\n\"" + "\n"
     FOR_CASE_STRING += "\t\ttry {" + "\n"
 }
 
+/**
+ * @description Add Server Query string
+ * @param {*} url 
+ * @param {*} mongo_collection 
+ */
 const addServerQueryString = (url, mongo_collection) => {
     SERVER_QUERY_STRING += `\t\t\tconst id = ${mongo_collection}_DATA[i]["_id"]`
     SERVER_QUERY_STRING += "\n"
@@ -81,6 +98,11 @@ const addServerQueryString = (url, mongo_collection) => {
     SERVER_QUERY_STRING += "\n"
 }
 
+/**
+ * @description Add status check string
+ * @param {*} url 
+ * @param {*} mongo_collection 
+ */
 const addStatusCheckString = (right_status) => {
     STATUS_CHECK_STRING += `
             if(res.status !== ${right_status}) {
@@ -92,6 +114,11 @@ const addStatusCheckString = (right_status) => {
 `
 }
 
+/**
+ * @description Add Type check string
+ * @param {*} url 
+ * @param {*} mongo_collection 
+ */
 const addTypeCheckString = (type) => {
     TYPE_CHECK_STRING += `
             if(typeof(res.data) === '${type}' && len === undefined)
@@ -103,6 +130,11 @@ const addTypeCheckString = (type) => {
 `
 }
 
+/**
+ * @description Add check data string
+ * @param {*} url 
+ * @param {*} mongo_collection 
+ */
 const addCheckDataString = (filter_column, mongo_collection) => {
     CHECK_DATA_STRING += "\t\t\tconst filter_column = " + JSON.stringify(filter_column) + "\n"
     CHECK_DATA_STRING += `
@@ -123,6 +155,10 @@ const addCheckDataString = (filter_column, mongo_collection) => {
             }`
 }
 
+/**
+ * @description Add end string
+ * @param {*} mongo_collection 
+ */
 const addEndString = (mongo_collection) => {
     END_STRING += `
         }
@@ -141,6 +177,10 @@ const addEndString = (mongo_collection) => {
 `
 }
 
+/**
+ * @description  Add new function string
+ * @param {*} mongo_collection 
+ */
 const addNewFunctionString = (newFunction) => {
     NEW_FUNCTION_STRING += `
     if(!ERROR)
@@ -150,6 +190,12 @@ const addNewFunctionString = (newFunction) => {
 `
 }
 
+/**
+ * @description Create string for the provided patch api
+ * @param {*} patch_api 
+ * @param {*} nextFunction 
+ * @returns 
+ */
 const createPatchTest = (patch_api, nextFunction) => {
     const {
         api,

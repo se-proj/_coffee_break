@@ -1,5 +1,5 @@
 /**
- * 
+ * Create string for delete api for test file
  */
 
  let FUNCTION_TITLE_STRING = ""
@@ -15,10 +15,19 @@
 // //////////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////
 
+/**
+ * @description Add function title string
+ * @param {*} func_name 
+ */
 const addFunctionTitle = (func_name) => {
     FUNCTION_TITLE_STRING += `const ${func_name} = async () => {\n`
 }
 
+/**
+ * @description Add Description strging
+ * @param {*} description 
+ * @param {*} mongo_collection 
+ */
 const addDescriptionString = (description, mongo_collection) => {
     DESCRIPTION_STRING += "\tlet api_log = \"\\n\"" + "\n"
     DESCRIPTION_STRING += "\tlet error_flag = false" + "\n"
@@ -26,12 +35,20 @@ const addDescriptionString = (description, mongo_collection) => {
     DESCRIPTION_STRING += "\tconst length = " + mongo_collection + "_DATA.length" + "\n"
 }
 
+/**
+ * Add For loop string
+ */
 const addForCaseString = () => {
     FOR_CASE_STRING += "\tfor(let i = 0; i < length; i++) {" + "\n"
     FOR_CASE_STRING += "\t\tapi_log += \"CASE \" + (i + 1) + " + "\":\\n\"" + "\n"
     FOR_CASE_STRING += "\t\ttry {" + "\n"
 }
 
+/**
+ * @description Add Server Query string
+ * @param {*} url 
+ * @param {*} mongo_collection 
+ */
 const addServerQueryString = (url, mongo_collection) => {
     SERVER_QUERY_STRING += `\t\t\tconst id = ${mongo_collection}_DATA[i]["_id"]`
     SERVER_QUERY_STRING += "\n"
@@ -40,6 +57,9 @@ const addServerQueryString = (url, mongo_collection) => {
     SERVER_QUERY_STRING += "\n"
 }
 
+/**
+ * @description Add Status check string
+ */
 const addStatusCheckString = () => {
     STATUS_CHECK_STRING += `
             if(res.status >= 200 && res.status <= 299) {
@@ -51,6 +71,10 @@ const addStatusCheckString = () => {
 `
 }
 
+/**
+ * @description Add end string
+ * @param {*} mongo_collection 
+ */
 const addEndString = (mongo_collection) => {
     END_STRING += `
         }
@@ -69,6 +93,10 @@ const addEndString = (mongo_collection) => {
 `
 }
 
+/**
+ * @description Add new function string
+ * @param {*} newFunction 
+ */
 const addNewFunctionString = (newFunction) => {
     NEW_FUNCTION_STRING += `
     if(!ERROR)
@@ -78,6 +106,12 @@ const addNewFunctionString = (newFunction) => {
 `
 }
 
+/**
+ * @description Create string for the provided delete api
+ * @param {*} delete_api 
+ * @param {*} nextFunction 
+ * @returns compiled delete api string
+ */
 const createDeleteTest = (delete_api, nextFunction) => {
     const {
         api,
