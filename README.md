@@ -448,6 +448,7 @@ The above information provided under [How it Works?](#how-it-works) provides the
 [Tool Demonstration Video](https://drive.google.com/file/d/1fkkXkBvDEyM-X9aAqXJIoUYdPQOdw64D/view?usp=sharing)  
 [npm page for coffee-break-api](https://www.npmjs.com/package/coffee-break-api)
 [github page for testing folders](https://github.com/se-proj/frontend)
+[Link to Documentation](https://github.com/se-proj/frontend/tree/main/ProjectFiles)
 
 <br>
 
