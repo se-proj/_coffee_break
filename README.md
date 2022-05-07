@@ -446,9 +446,9 @@ These are the dependencies that the tool wants the user to have installed
 The above information provided under [How it Works?](#how-it-works) provides the necessary details to continue the work. The below are a few useful links for simple navigation
 
 [Tool Demonstration Video](https://drive.google.com/file/d/1fkkXkBvDEyM-X9aAqXJIoUYdPQOdw64D/view?usp=sharing)  
-[npm page for coffee-break-api](https://www.npmjs.com/package/coffee-break-api)
-[github page for testing folders](https://github.com/se-proj/frontend)
-[Link to Documentation](https://github.com/se-proj/frontend/tree/main/ProjectFiles)
+[npm page for coffee-break-api](https://www.npmjs.com/package/coffee-break-api)  
+[github page for testing folders](https://github.com/se-proj/frontend)  
+[Link to Documentation](https://github.com/se-proj/frontend/tree/main/ProjectFiles)  
 
 <br>
 
